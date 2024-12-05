@@ -6,7 +6,7 @@ from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Float
 #Para calcular la hora actual
 import datetime
 
-class Alumnos(BaseClass):
+class Alumno(BaseClass):
     __tablename__="alumnos"
     id=Column(Integer,primary_key=True)
     nombre=Column(String(100))
@@ -18,17 +18,17 @@ class Alumnos(BaseClass):
     password=Column(String(100))
     fecha_registro=Column(DateTime(timezone=True),default=datetime.datetime.now)
 
-class Calificaciones(BaseClass):
+class Calificacion(BaseClass):
     __tablename__="calificaciones"
     id=Column(Integer,primary_key=True)
-    id_alumno=Column(Integer, ForeignKey(Alumnos.id))
+    id_alumno=Column(Integer, ForeignKey(Alumno.id))
     uea=Column(String(100))
     calificacion=Column(String(100))
 
-class Fotos(BaseClass):
+class Foto(BaseClass):
     __tablename__="fotos"
     id=Column(Integer,primary_key=True)
-    id_alumno=Column(Integer, ForeignKey(Alumnos.id))
+    id_alumno=Column(Integer, ForeignKey(Alumno.id))
     titulo=Column(String(100))
     descripcion=Column(String(100))
     ruta=Column(String(100))
