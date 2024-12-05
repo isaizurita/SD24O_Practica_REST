@@ -31,3 +31,8 @@ def lista_calificaciones(sesion: Session):
 def calificacion_por_id(sesion: Session, id_calificacion: int):
     print("select * from app.calificaciones where id=", id_calificacion);
     return sesion.query(modelos.Calificacion).filter(modelos.Calificacion.id==id_calificacion).first();
+
+#SELECT * FROM app.calificaciones WHERE id_alumnos={id_al}
+def calificaciones_por_id_alumno(sesion: Session, id_alumno: int):
+    print("select * from app.calificaciones where id=", id_alumno);
+    return sesion.query(modelos.Calificacion).filter(modelos.Calificacion.id_alumno==id_alumno).all()

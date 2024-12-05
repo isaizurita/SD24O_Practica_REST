@@ -47,3 +47,8 @@ def calificaciones_por_id(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultandfo calificacion por id");
     return repo.calificacion_por_id(sesion, id);
 
+@app.get("/alumnos/{id}/calificaciones")
+def calificaciones_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    print("Api consultando calificaciones por alumno ", id);
+    return repo.calificaciones_por_id_alumno(sesion, id);
+
