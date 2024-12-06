@@ -47,8 +47,17 @@ def calificaciones_por_id(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultandfo calificacion por id");
     return repo.calificacion_por_id(sesion, id);
 
+#Get para obtener calificacion por id de alumno
 @app.get("/alumnos/{id}/calificaciones")
 def calificaciones_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultando calificaciones por alumno ", id);
     return repo.calificaciones_por_id_alumno(sesion, id);
 
+@app.get
+
+@app.delete("/usuario/{id}")
+def borrar_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    repo.borrar_calificaciones_por_id_alumno(sesion, id);
+    repo.borrar_fotos_por_id_alumno(sesion, id);
+    repo.borra_alumno_por_id(sesion, id)
+    return {"status_borrado", "ok"}
