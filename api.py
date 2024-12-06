@@ -88,3 +88,5 @@ def borrar_calificacion_por_id_alumno(id: int, sesion: Session=Depends(generador
 def borrar_foto_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
     repo.borrar_fotos_por_id_alumno(sesion, id);
     return {"status_borrado":"ok"}
+
+'''Versión final completada'''
