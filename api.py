@@ -23,6 +23,19 @@ def alumno_por_id(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultando alumno por id");
     return repo.alumno_por_id(sesion, id);
 
+#Get para obtener calificaciones por id de alumno
+@app.get("/alumnos/{id}/calificaciones")
+def calificaciones_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    print("Api consultando calificaciones por alumno ", id);
+    return repo.calificaciones_por_id_alumno(sesion, id);
+
+#Get para obtener fotos por id de alumno
+@app.get("/alumnos/{id}/fotos")
+def fotos_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    print("Api consultando fotos por alumno ", id);
+    return repo.foto_por_id_alumno(sesion, id);
+
+
 #Get para obtener la lista de fotos
 @app.get("/fotos")
 def lista_fotos(sesion: Session=Depends(generador_sesion)):
@@ -34,6 +47,7 @@ def lista_fotos(sesion: Session=Depends(generador_sesion)):
 def foto_por_id(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultando foto por id");
     return repo.foto_por_id(sesion, id);
+
 
 #Get para obtener la lista de las calificaciones
 @app.get("/calificaciones")
@@ -47,17 +61,30 @@ def calificaciones_por_id(id: int, sesion: Session=Depends(generador_sesion)):
     print("Api consultandfo calificacion por id");
     return repo.calificacion_por_id(sesion, id);
 
-#Get para obtener calificacion por id de alumno
-@app.get("/alumnos/{id}/calificaciones")
-def calificaciones_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
-    print("Api consultando calificaciones por alumno ", id);
-    return repo.calificaciones_por_id_alumno(sesion, id);
 
-@app.get
-
-@app.delete("/usuario/{id}")
+@app.delete("/alumnos/{id}")
 def borrar_alumno(id: int, sesion: Session=Depends(generador_sesion)):
     repo.borrar_calificaciones_por_id_alumno(sesion, id);
     repo.borrar_fotos_por_id_alumno(sesion, id);
     repo.borra_alumno_por_id(sesion, id)
     return {"status_borrado", "ok"}
+
+@app.delete("/fotos/{id}")
+def borrar_foto(id: int, sesion: Session=Depends(generador_sesion)):
+    repo.borra_foto_por_id(sesion, id);
+    return {"status_borrado", "ok"}
+
+@app.delete("/calicaciones/{id}")
+def borrar_calificacion(id: int, sesion: Session=Depends(generador_sesion)):
+    repo.borra_calificacion_por_id(sesion, id);
+    return {"status_borrado", "ok"}
+
+@app.delete("/alumnos/{id}/calificaciones")
+def borrar_calificacion_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    repo.borrar_calificaciones_por_id_alumno(sesion, id);
+    return {"status_borrado":"ok"}
+
+@app.delete("/alumnos/{id}/fotos")
+def borrar_foto_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)):
+    repo.borrar_fotos_por_id_alumno(sesion, id);
+    return {"status_borrado":"ok"}

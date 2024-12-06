@@ -55,6 +55,10 @@ def borrar_fotos_por_id_alumno(sesion: Session, id_alumno: int):
         for foto_alumno in fotos_al:
             sesion.delete(foto_alumno)
         sesion.commit()
+        respuesta={
+            "mensaje":"foto eliminada"
+        }
+        return respuesta
 
 #delete from app.calificaciones where id_alumno={id_alumno}
 def borrar_calificaciones_por_id_alumno(sesion: Session, id_alumno):
@@ -66,6 +70,10 @@ def borrar_calificaciones_por_id_alumno(sesion: Session, id_alumno):
         for calificacion_alumno in calificaciones_al:
             sesion.delete(calificacion_alumno)
         sesion.commit();
+        respuesta={
+            "mensaje":"calificacion eliminada"
+        }
+        return respuesta
 
 #delete from app.alumno where id=id_alumno
 def borra_alumno_por_id(sesion: Session, id_alumno: int):
@@ -82,4 +90,32 @@ def borra_alumno_por_id(sesion: Session, id_alumno: int):
     }
     return respuesta
 
+#delete from app.fotos where id={id}
+def borra_foto_por_id(sesion: Session, id_foto):
+    print("delete from app.fotos where id=", id_foto);
+
+    foto=foto_por_id(sesion, id_foto)
+
+    if foto is not None:
+        sesion.delete(foto)
+        sesion.commit()
     
+    respuesta={
+        "mensaje":"foto eliminada"
+    }
+    return respuesta
+
+#delete from app.calificaciones where id={id}
+def borra_calificacion_por_id(sesion: Session, id_cal):
+    print("delete from app.calificaciones where id=", id_cal);
+
+    cal=calificacion_por_id(sesion, id_cal)
+
+    if cal is not None:
+        sesion.delete(cal)
+        sesion.commit()
+    
+    respuesta={
+        "mensaje":"calificación eliminada"
+    }
+    return respuesta
