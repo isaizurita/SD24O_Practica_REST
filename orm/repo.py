@@ -120,7 +120,7 @@ def borra_calificacion_por_id(sesion: Session, id_cal):
     }
     return respuesta
 
-#PUT '/alumnos/{id}
+#PUT '/alumnos/{id}'
 def actualiza_alumno(sesion: Session, id_alumno: int, alumno_esquema: esquemas.AlumnoBase):
     #Verificar que el alumno exista
     alumno_bd = alumno_por_id(sesion, id_alumno)
@@ -144,7 +144,7 @@ def actualiza_alumno(sesion: Session, id_alumno: int, alumno_esquema: esquemas.A
         respuesta={"mensaje":"No existe el alumno"}
         return respuesta
 
-#PUT '/fotos/{id}
+#PUT '/fotos/{id}'
 def actualiza_foto(sesion: Session, id_foto: int, foto_esquema: esquemas.FotoBase):
     foto_bd = foto_por_id(sesion, id_foto)
     if foto_bd is not None:
@@ -161,7 +161,7 @@ def actualiza_foto(sesion: Session, id_foto: int, foto_esquema: esquemas.FotoBas
         respuesta={"mensaje":"No existe la foto"}
         return respuesta
 
-#PUT '/calificaciones/{id}
+#PUT '/calificaciones/{id}'
 def actualiza_calificacion(sesion: Session, id_cal: int, cal_esquema: esquemas.CalificacionBase):
     cal_bd = calificacion_por_id(sesion, id_cal)
     if cal_bd is not None:
@@ -176,3 +176,65 @@ def actualiza_calificacion(sesion: Session, id_cal: int, cal_esquema: esquemas.C
     else:
         respuesta={"mensaje":"No existe la calificacion"}
         return respuesta
+
+#POST '/alumnos'
+def guardar_alumno(sesion: Session, alumno_esquema: esquemas.AlumnoBase):
+    #Crear un nuevo objero de la clase modelo Alumno
+    alumno_bd= modelos.Alumno()
+    #Llenamos el nuevo objero con los parámetros que nos pasó el usuario
+    alumno_bd.nombre = alumno_esquema.nombre
+    alumno_bd.edad = alumno_esquema.edad
+    alumno_bd.domicilio = alumno_esquema.domicilio
+    alumno_bd.carrera = alumno_esquema.carrera
+    alumno_bd.trimestre = alumno_esquema.trimestre
+    alumno_bd.email = alumno_esquema.email
+    alumno_bd.password = alumno_esquema.password
+    #Insertar el nuevo objeto a la Base de Datos
+    sesion.add(alumno_bd)
+    #Confirmamos el cambio
+    sesion.commit()
+    #Hacemos un refresh
+    sesion.refresh(alumno_bd)
+    return alumno_bd
+
+#POST '/alumnos/{id}/calificaciones
+def guardar_calificacion(sesion: Session, alumno_id: int, cal_nueva: esquemas.CalificacionBase):
+    # Verificar si el alumno existe utilizando alumno_por_id
+    alumno = alumno_por_id(sesion, alumno_id)
+
+    if not alumno:
+        mensaje={"Mensaje":"Alumno no encontrado"}
+        return mensaje
+
+    else:
+        # Crear un nuevo objeto de la clase modelo Compra
+        cal_bd = modelos.Calificacion()
+        # Llenar el nuevo objeto con los parámetros que nos pasó el usuario
+        cal_bd.id_alumno = alumno_id
+        cal_bd.uea = cal_nueva.uea
+        cal_bd.calificacion = cal_nueva.calificacion
+
+        # Insertar el nuevo objeto en la Base de Datos
+        sesion.add(cal_bd)
+        # Confirmar el cambio
+        sesion.commit()
+        # Hacer un refresh
+        sesion.refresh(cal_bd)
+        return cal_bd
+    
+#POST '/alumnos/{id}/fotos
+def guardar_foto(sesion: Session, alumno_id: int, foto_nueva: esquemas.FotoBase):
+    alumno = alumno_por_id(sesion, alumno_id)
+    if not alumno:
+        mensaje={"Mensaje":"Alumno no encontrado"}
+        return mensaje
+    else:
+        foto_db = modelos.Foto()
+        foto_db.id_alumno = alumno_id
+        foto_db.titulo = foto_nueva.titulo
+        foto_db.descripcion = foto_nueva.descripcion
+        foto_db.ruta = foto_nueva.ruta
+        sesion.add(foto_db)
+        sesion.commit()
+        sesion.refresh(foto_db)
+        return foto_db

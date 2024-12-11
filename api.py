@@ -92,12 +92,25 @@ def borrar_foto_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)
 
 @app.put("/alumnos/{id}")
 def actualizar_alumno(id: int, info_alumno: esquemas.AlumnoBase, sesion: Session=Depends(generador_sesion)):
-    repo.actualiza_alumno(sesion, id, info_alumno)
+    return repo.actualiza_alumno(sesion, id, info_alumno)
 
 @app.put("/fotos/{id}")
 def actualizar_foto(id: int, info_foto: esquemas.FotoBase, sesion: Session=Depends(generador_sesion)):
-    repo.actualiza_foto(sesion, id, info_foto)
+    return repo.actualiza_foto(sesion, id, info_foto)
 
 @app.put("/calificaciones/{id}")
 def actualizar_calificacion(id: int, info_cal: esquemas.CalificacionBase, sesion: Session=Depends(generador_sesion)):
-    repo.actualiza_calificacion(sesion, id, info_cal)
+    return repo.actualiza_calificacion(sesion, id, info_cal)
+
+@app.post("/alumnos")
+def guardar_alumno(alumno: esquemas.AlumnoBase, sesion: Session=Depends(generador_sesion)):
+    print(alumno)
+    return repo.guardar_alumno(sesion, alumno)
+
+@app.post("/alumnos/{id}/calificaciones")
+def guardar_calificacion(id: int, calificacion: esquemas.CalificacionBase, sesion: Session=Depends(generador_sesion)):
+    return repo.guardar_calificacion(sesion, id, calificacion)
+
+@app.post("/alumnos/{id}/fotos")
+def guardar_foto(id: int, foto: esquemas.FotoBase, sesion: Session=Depends(generador_sesion)):
+    return repo.guardar_foto(sesion, id, foto)
