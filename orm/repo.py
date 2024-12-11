@@ -1,6 +1,6 @@
 import orm.modelos as modelos
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
+import orm.esquemas as esquemas
 
 #SELECT * FROM app.alumnos
 def lista_alumnos(sesion: Session):
@@ -119,3 +119,60 @@ def borra_calificacion_por_id(sesion: Session, id_cal):
         "mensaje":"calificación eliminada"
     }
     return respuesta
+
+#PUT '/alumnos/{id}
+def actualiza_alumno(sesion: Session, id_alumno: int, alumno_esquema: esquemas.AlumnoBase):
+    #Verificar que el alumno exista
+    alumno_bd = alumno_por_id(sesion, id_alumno)
+    if alumno_bd is not None:
+        #Si existe, modificar la siguiente información
+        alumno_bd.nombre = alumno_esquema.nombre
+        alumno_bd.edad = alumno_esquema.edad
+        alumno_bd.domicilio = alumno_esquema.domicilio
+        alumno_bd.carrera = alumno_esquema.carrera
+        alumno_bd.trimestre = alumno_esquema.trimestre
+        alumno_bd.email = alumno_esquema.email
+        alumno_bd.password = alumno_esquema.password
+        #Confirmar los cambios
+        sesion.commit()
+        #Refrescar la base de datos
+        sesion.refresh(alumno_bd)
+        #Imprimir los nuevos datos
+        print(alumno_esquema)
+        return alumno_esquema
+    else:
+        respuesta={"mensaje":"No existe el alumno"}
+        return respuesta
+
+#PUT '/fotos/{id}
+def actualiza_foto(sesion: Session, id_foto: int, foto_esquema: esquemas.FotoBase):
+    foto_bd = foto_por_id(sesion, id_foto)
+    if foto_bd is not None:
+        foto_bd.titulo = foto_esquema.titulo
+        foto_bd.descripcion = foto_esquema.descripcion
+        foto_bd.ruta = foto_esquema.ruta
+        
+        sesion.commit()
+        sesion.refresh(foto_bd)
+        print(foto_esquema)
+        return foto_esquema
+    
+    else:
+        respuesta={"mensaje":"No existe la foto"}
+        return respuesta
+
+#PUT '/calificaciones/{id}
+def actualiza_calificacion(sesion: Session, id_cal: int, cal_esquema: esquemas.CalificacionBase):
+    cal_bd = calificacion_por_id(sesion, id_cal)
+    if cal_bd is not None:
+        cal_bd.uea = cal_esquema.uea
+        cal_bd.calificacion = cal_esquema.calificacion
+        
+        sesion.commit()
+        sesion.refresh(cal_bd)
+        print(cal_esquema)
+        return cal_esquema
+    
+    else:
+        respuesta={"mensaje":"No existe la calificacion"}
+        return respuesta

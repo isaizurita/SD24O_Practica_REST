@@ -7,6 +7,7 @@ import uuid
 import orm.repo as repo #Funciones para hacer consultas a la DB
 from sqlalchemy.orm import Session
 from orm.config import generador_sesion #Generador de sesiones
+import orm.esquemas as esquemas
 
 #Creación del servidor 
 app = FastAPI();
@@ -89,4 +90,14 @@ def borrar_foto_por_id_alumno(id: int, sesion: Session=Depends(generador_sesion)
     repo.borrar_fotos_por_id_alumno(sesion, id);
     return {"status_borrado":"ok"}
 
-'''Versión final completada'''
+@app.put("/alumnos/{id}")
+def actualizar_alumno(id: int, info_alumno: esquemas.AlumnoBase, sesion: Session=Depends(generador_sesion)):
+    repo.actualiza_alumno(sesion, id, info_alumno)
+
+@app.put("/fotos/{id}")
+def actualizar_foto(id: int, info_foto: esquemas.FotoBase, sesion: Session=Depends(generador_sesion)):
+    repo.actualiza_foto(sesion, id, info_foto)
+
+@app.put("/calificaciones/{id}")
+def actualizar_calificacion(id: int, info_cal: esquemas.CalificacionBase, sesion: Session=Depends(generador_sesion)):
+    repo.actualiza_calificacion(sesion, id, info_cal)
